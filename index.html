@@ -1,0 +1,585 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Minh An B2B Sales & DataLens AI Agent · Enterprise BI Platform</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+
+  <script src="https://www.gstatic.com/antigravity/web/dev/tailwindcss.min.js"></script>
+  <script src="xlsx.full.min.js"></script>
+  <link rel="stylesheet" href="bi-dashboard.css">
+  <style>
+    :root {
+      --canvas-ivory: #FAF7F2;
+      --card-glass: rgba(255, 255, 255, 0.85);
+      --card-border: rgba(226, 217, 200, 0.75);
+      --emerald-dark: #0A261D;
+      --emerald-primary: #0D2B22;
+      --emerald-accent: #134232;
+      --gold-champagne: #D4B07B;
+      --gold-deep: #C8A870;
+      --surface-cream: #F5EFE6;
+      --text-primary: #0A261D;
+      --text-muted: #4A635A;
+      --text-body: #2C423B;
+      --border-subtle: #ECE4D8;
+    }
+
+    ::-webkit-scrollbar { width: 6px; height: 6px; }
+    ::-webkit-scrollbar-track { background: #FAF7F2; }
+    ::-webkit-scrollbar-thumb { background: #D8CEBE; border-radius: 4px; }
+    ::-webkit-scrollbar-thumb:hover { background: #0A261D; }
+
+    body {
+      background-color: #FAF7F2;
+      color: #0A261D;
+      min-height: 100vh;
+      overflow-x: hidden;
+      font-family: 'Plus Jakarta Sans', system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    }
+
+    .glass-card {
+      position: relative;
+      background: rgba(255, 255, 255, 0.85) !important;
+      backdrop-filter: blur(16px) saturate(160%) !important;
+      -webkit-backdrop-filter: blur(16px) saturate(160%) !important;
+      border: 1px solid rgba(226, 217, 200, 0.80) !important;
+      box-shadow: 0 10px 30px -6px rgba(10, 35, 26, 0.05), 0 2px 6px rgba(10, 35, 26, 0.02) !important;
+      border-radius: 1.25rem !important;
+      transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1) !important;
+    }
+    .glass-card:hover {
+      background: rgba(255, 255, 255, 0.95) !important;
+      border-color: rgba(212, 176, 123, 0.5) !important;
+      box-shadow: 0 16px 40px -8px rgba(10, 35, 26, 0.08), 0 4px 12px rgba(10, 35, 26, 0.03) !important;
+    }
+
+    .glass-input {
+      background: rgba(255, 255, 255, 0.90) !important;
+      border: 1.5px solid rgba(226, 217, 200, 0.85) !important;
+      border-radius: 0.875rem !important;
+      color: #0A261D !important;
+      font-weight: 500 !important;
+      transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1) !important;
+    }
+    .glass-input:focus, .glass-input:focus-within {
+      background: #FFFFFF !important;
+      border-color: #0A261D !important;
+      box-shadow: 0 0 0 3px rgba(10, 35, 26, 0.08), 0 4px 14px rgba(200, 168, 112, 0.15) !important;
+      outline: none !important;
+    }
+
+    .glass-pill {
+      background: rgba(255, 255, 255, 0.85) !important;
+      backdrop-filter: blur(12px) !important;
+      border: 1px solid rgba(226, 217, 200, 0.75) !important;
+      transition: all 0.2s ease !important;
+    }
+    .glass-pill:hover {
+      background: rgba(255, 255, 255, 1) !important;
+      border-color: #C8A870 !important;
+    }
+
+    .tab-btn.active {
+      background: #0A261D !important;
+      color: #FAF7F2 !important;
+      border-color: #0A261D !important;
+      box-shadow: 0 4px 14px rgba(10, 38, 29, 0.25) !important;
+    }
+    .tab-btn:not(.active) {
+      background: rgba(255, 255, 255, 0.75) !important;
+      color: #4A635A !important;
+      border-color: rgba(226, 217, 200, 0.8) !important;
+    }
+    .tab-btn:not(.active):hover {
+      background: #FFFFFF !important;
+      color: #0A261D !important;
+      border-color: #C8A870 !important;
+    }
+
+    .step-pill-active {
+      background: #0A261D !important;
+      color: #FFFFFF !important;
+      border: 1px solid #D4B07B !important;
+      box-shadow: 0 4px 12px rgba(10, 38, 29, 0.2) !important;
+    }
+    .step-pill-done {
+      background: #E8F2EE !important;
+      color: #0D7A5F !important;
+      border: 1px solid rgba(13, 122, 95, 0.3) !important;
+    }
+    .step-pill-locked {
+      background: rgba(255, 255, 255, 0.6) !important;
+      color: #8FA99E !important;
+      border: 1px dashed #D8CEBE !important;
+      cursor: not-allowed !important;
+    }
+
+    .toast-box {
+      position: fixed;
+      bottom: 24px;
+      right: 24px;
+      z-index: 9999;
+      transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+  </style>
+</head>
+<body class="antialiased min-h-screen selection:bg-[#0A261D] selection:text-white flex flex-col relative bg-[#FAF7F2]">
+
+  <!-- ================= 4K AMBIENT GOLD SILK RIBBON BACKDROP ================= -->
+  <div class="absolute top-0 right-0 w-[55vw] max-w-[850px] h-[400px] pointer-events-none overflow-hidden z-0 select-none hidden sm:block">
+    <svg viewBox="0 0 850 400" fill="none" xmlns="http://www.w3.org/2000/svg" class="w-full h-full object-cover">
+      <defs>
+        <linearGradient id="goldThread" x1="0%" y1="100%" x2="100%" y2="0%">
+          <stop offset="0%" stop-color="#C8A870" stop-opacity="0.1"/>
+          <stop offset="30%" stop-color="#D4B07B" stop-opacity="0.85"/>
+          <stop offset="70%" stop-color="#F2DEBE" stop-opacity="0.95"/>
+          <stop offset="100%" stop-color="#D4B07B" stop-opacity="0.2"/>
+        </linearGradient>
+        <radialGradient id="emeraldAura" cx="80%" cy="10%" r="70%">
+          <stop offset="0%" stop-color="#0E382A" stop-opacity="0.6"/>
+          <stop offset="50%" stop-color="#154B3A" stop-opacity="0.25"/>
+          <stop offset="100%" stop-color="#FAF7F2" stop-opacity="0"/>
+        </radialGradient>
+      </defs>
+      <path d="M 0,0 L 850,0 L 850,300 C 650,220 500,320 300,180 C 150,90 50,150 0,60 Z" fill="url(#emeraldAura)" opacity="0.6"/>
+      <path d="M 120,0 C 260,120 450,45 640,130 C 740,175 800,140 850,180" stroke="url(#goldThread)" stroke-width="1.8" fill="none"/>
+      <path d="M 180,0 C 310,135 490,60 670,145 C 765,188 820,155 850,200" stroke="url(#goldThread)" stroke-width="1.3" fill="none"/>
+      <path d="M 240,0 C 360,150 530,75 700,160 C 790,200 835,170 850,220" stroke="url(#goldThread)" stroke-width="1.0" fill="none"/>
+    </svg>
+  </div>
+
+  <!-- MAIN WRAPPER CONTAINER -->
+  <div class="p-4 md:p-8 flex-1 flex flex-col max-w-7xl w-full mx-auto relative z-10">
+
+    <!-- ================= TOP HEADER (GREETING & USER PROFILE) ================= -->
+    <header class="flex flex-col sm:flex-row items-start sm:items-center justify-between pb-6 mb-6 gap-4 border-b border-[#ECE4D8]">
+      <div>
+        <div class="text-xs md:text-sm text-[#4A635A] font-medium mb-0.5">Xin chào,</div>
+        <h1 class="text-xl md:text-2xl lg:text-3xl font-black text-[#0A261D] tracking-tight">Khám phá giá trị từ dữ liệu</h1>
+        <p class="text-xs md:text-sm text-[#4A635A] font-medium mt-0.5">NexusBI giúp bạn phân tích, trực quan hóa và đưa ra quyết định thông minh hơn.</p>
+      </div>
+
+      <div class="flex items-center gap-2.5 flex-wrap self-end sm:self-auto">
+        <!-- QUICK TOGGLES -->
+        <button onclick="toggleStepLock()" id="btnLockToggle" title="Bật/Tắt khóa tuần tự các bước bắt buộc" class="px-3.5 py-1.5 rounded-full glass-pill text-[#0A261D] flex items-center gap-1.5 font-bold text-xs transition hover:border-[#0A261D] cursor-pointer">
+          <svg class="w-3.5 h-3.5 text-[#C8A870]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path></svg>
+          <span id="txtLockToggle">Khóa tuần tự</span>
+        </button>
+
+        <button onclick="resetSystemToZero()" title="Bắt đầu lại / Làm sạch dữ liệu về 0" class="p-2 rounded-full glass-pill text-[#4A635A] hover:text-[#DC2626] transition hover:border-[#DC2626] cursor-pointer">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path></svg>
+        </button>
+
+        <!-- AI ASSISTANT -->
+        <button onclick="openChatDrawer()" class="px-3.5 py-1.5 rounded-full bg-gradient-to-r from-[#D4B07B] to-[#C8A870] hover:from-[#DFBE8A] hover:to-[#D4B07B] text-[#0A261D] font-bold text-xs shadow-md shadow-[#C8A870]/25 flex items-center gap-1.5 transition cursor-pointer">
+          <svg class="w-3.5 h-3.5 text-[#0A261D]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+          <span>Trợ Lý AI</span>
+        </button>
+
+        <!-- USER PROFILE -->
+        <div class="flex items-center gap-2 pl-2">
+          <div class="w-8 h-8 rounded-full bg-[#11382A] text-[#D4B07B] flex items-center justify-center font-bold text-xs border border-[#D4B07B]/40 shadow-sm">
+            NT
+          </div>
+          <span class="text-xs font-bold text-[#0A261D] hidden md:block">Nguyễn Văn A</span>
+        </div>
+      </div>
+    </header>
+
+    <!-- ================= 4 TOP FROSTED GLASS KPI CARDS ================= -->
+    <section class="grid grid-cols-2 md:grid-cols-4 gap-3.5 md:gap-4 mb-6" id="top-kpi-cards-grid">
+      <div class="glass-card p-4 flex flex-col justify-between">
+        <div class="flex items-center justify-between mb-2">
+          <div class="w-8 h-8 rounded-xl bg-[#E8F2EE] flex items-center justify-center text-[#0D2B22]">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 7v10c0 2 1.5 3 3.5 3h9c2 0 3.5-1 3.5-3V7c0-2-1.5-3-3.5-3h-9C5.5 4 4 5 4 7z"></path></svg>
+          </div>
+          <span id="kpi-status-1" class="text-[10px] font-bold px-2 py-0.5 rounded-full bg-[#E8F2EE] text-[#0D2B22]">Chờ nạp</span>
+        </div>
+        <div class="text-[11px] font-semibold text-[#4A635A]">Tổng dữ liệu</div>
+        <div id="kpi-val-requests" class="text-xl md:text-2xl font-black text-[#0A261D] tracking-tight mt-0.5">0 MB</div>
+        <div class="mt-2.5 h-6 w-full relative overflow-hidden">
+          <svg class="w-full h-full" viewBox="0 0 100 24" preserveAspectRatio="none">
+            <path d="M 0,18 C 20,20 35,9 55,11 C 75,13 85,5 100,3 L 100,24 L 0,24 Z" fill="rgba(13, 122, 95, 0.15)"/>
+            <path d="M 0,18 C 20,20 35,9 55,11 C 75,13 85,5 100,3" fill="none" stroke="#0D7A5F" stroke-width="2"/>
+            <circle cx="100" cy="3" r="2.5" fill="#0D7A5F"/>
+          </svg>
+        </div>
+      </div>
+
+      <div class="glass-card p-4 flex flex-col justify-between">
+        <div class="flex items-center justify-between mb-2">
+          <div class="w-8 h-8 rounded-xl bg-[#F5EFE6] flex items-center justify-center text-[#C8A870]">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path></svg>
+          </div>
+          <span id="kpi-status-2" class="text-[10px] font-bold px-2 py-0.5 rounded-full bg-[#F5EFE6] text-[#4A635A]">0 báo cáo</span>
+        </div>
+        <div class="text-[11px] font-semibold text-[#4A635A]">Tổng báo cáo</div>
+        <div id="kpi-val-revenue" class="text-xl md:text-2xl font-black text-[#0A261D] tracking-tight mt-0.5">0</div>
+        <div class="mt-2.5 h-6 w-full relative overflow-hidden">
+          <svg class="w-full h-full" viewBox="0 0 100 24" preserveAspectRatio="none">
+            <path d="M 0,16 C 25,18 40,7 65,9 C 80,11 90,4 100,2 L 100,24 L 0,24 Z" fill="rgba(212, 176, 123, 0.2)"/>
+            <path d="M 0,16 C 25,18 40,7 65,9 C 80,11 90,4 100,2" fill="none" stroke="#C8A870" stroke-width="2"/>
+            <circle cx="100" cy="2" r="2.5" fill="#D4B07B"/>
+          </svg>
+        </div>
+      </div>
+
+      <div class="glass-card p-4 flex flex-col justify-between">
+        <div class="flex items-center justify-between mb-2">
+          <div class="w-8 h-8 rounded-xl bg-[#E8F2EE] flex items-center justify-center text-[#134232]">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+          </div>
+          <span id="kpi-status-3" class="text-[10px] font-bold px-2 py-0.5 rounded-full bg-[#E8F2EE] text-[#4A635A]">Chờ xử lý</span>
+        </div>
+        <div class="text-[11px] font-semibold text-[#4A635A]">Thời gian xử lý TB</div>
+        <div id="kpi-val-time" class="text-xl md:text-2xl font-black text-[#0A261D] tracking-tight mt-0.5">0.0s</div>
+        <div class="mt-2.5 h-6 w-full relative overflow-hidden">
+          <svg class="w-full h-full" viewBox="0 0 100 24" preserveAspectRatio="none">
+            <path d="M 0,8 C 20,6 35,16 55,14 C 75,12 85,18 100,10 L 100,24 L 0,24 Z" fill="rgba(19, 66, 50, 0.15)"/>
+            <path d="M 0,8 C 20,6 35,16 55,14 C 75,12 85,18 100,10" fill="none" stroke="#134232" stroke-width="2"/>
+            <circle cx="100" cy="10" r="2.5" fill="#134232"/>
+          </svg>
+        </div>
+      </div>
+
+      <div class="glass-card p-4 flex flex-col justify-between">
+        <div class="flex items-center justify-between mb-2">
+          <div class="w-8 h-8 rounded-xl bg-[#F5EFE6] flex items-center justify-center text-[#C8A870]">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"></path></svg>
+          </div>
+          <span id="kpi-status-4" class="text-[10px] font-bold px-2 py-0.5 rounded-full bg-[#F5EFE6] text-[#4A635A]">Chờ tệp</span>
+        </div>
+        <div class="text-[11px] font-semibold text-[#4A635A]">Độ chính xác AI</div>
+        <div id="kpi-val-accuracy" class="text-xl md:text-2xl font-black text-[#0A261D] tracking-tight mt-0.5">0% (Chờ tệp)</div>
+        <div class="mt-2.5 h-6 w-full relative overflow-hidden">
+          <svg class="w-full h-full" viewBox="0 0 100 24" preserveAspectRatio="none">
+            <path d="M 0,17 C 20,14 40,7 60,9 C 80,5 90,3 100,2 L 100,24 L 0,24 Z" fill="rgba(16, 185, 129, 0.2)"/>
+            <path d="M 0,17 C 20,14 40,7 60,9 C 80,5 90,3 100,2" fill="none" stroke="#10B981" stroke-width="2"/>
+            <circle cx="100" cy="2" r="2.5" fill="#10B981"/>
+          </svg>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= 6 SCIENTIFIC NAVIGATION TABS ================= -->
+    <nav class="flex items-center gap-2 mb-6 overflow-x-auto pb-1" id="mainTabBar">
+      <!-- TAB 1: DATALENS STUDIO (AI ANALYSIS WORKFLOW AS SPECIFIED BY USER) -->
+      <button onclick="switchTab('datalens')" id="tabBtn-datalens" class="tab-btn active px-4 py-2.5 rounded-full text-xs font-bold flex items-center gap-2 transition cursor-pointer">
+        <svg class="w-4 h-4 text-[#10B981]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path></svg>
+        <span>🔬 Quy trình AI Phân Tích (DataLens Studio)</span>
+      </button>
+
+      <!-- TAB 2: B2B SALES & QUOTE WORKFLOW -->
+      <button onclick="switchTab('workflow')" id="tabBtn-workflow" class="tab-btn px-4 py-2.5 rounded-full text-xs font-bold flex items-center gap-2 transition cursor-pointer">
+        <svg class="w-4 h-4 text-[#D4B07B]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
+        <span>⚡ Báo giá B2B & Vận hành</span>
+      </button>
+
+      <!-- TAB 3: TRACKER -->
+      <button onclick="switchTab('tracker')" id="tabBtn-tracker" class="tab-btn px-4 py-2.5 rounded-full text-xs font-bold flex items-center gap-2 transition cursor-pointer">
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"></path></svg>
+        <span>Theo dõi Hồ sơ</span>
+        <span id="badgeTrackerCount" class="w-5 h-5 rounded-full bg-[#E2D9C8] text-[#0A261D] text-[10px] flex items-center justify-center font-bold">0</span>
+      </button>
+
+      <!-- TAB 4: APPROVALS -->
+      <button onclick="switchTab('approvals')" id="tabBtn-approvals" class="tab-btn px-4 py-2.5 rounded-full text-xs font-bold flex items-center gap-2 transition cursor-pointer">
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"></path></svg>
+        <span>Duyệt vượt quyền</span>
+        <span id="badgeApprovalCount" class="w-5 h-5 rounded-full bg-[#EF4444] text-white text-[10px] flex items-center justify-center font-bold hidden">0</span>
+      </button>
+
+      <!-- TAB 5: MASTERDATA -->
+      <button onclick="switchTab('masterdata')" id="tabBtn-masterdata" class="tab-btn px-4 py-2.5 rounded-full text-xs font-bold flex items-center gap-2 transition cursor-pointer">
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 10h16M4 14h16M4 18h16"></path></svg>
+        <span>Bảng giá & Tồn kho</span>
+      </button>
+    </nav>
+
+    <!-- ================= MAIN CONTENT AREA ================= -->
+    <main id="appContentArea" class="flex-1">
+
+      <!-- ================= TAB 1: DATALENS STUDIO (4-STAGE WORKFLOW) ================= -->
+      <section id="panel-datalens" class="space-y-6">
+
+        <!-- 4-STEP STEPPER: TIẾP NHẬN -> LÀM SẠCH -> PHÂN TÍCH -> BÁO CÁO -->
+        <div class="glass-card p-4 md:p-5">
+          <div class="flex items-center justify-between pb-3 mb-3 border-b border-[#ECE4D8]">
+            <div class="flex items-center gap-2">
+              <span class="w-2.5 h-2.5 rounded-full bg-[#10B981]"></span>
+              <h2 class="text-xs md:text-sm font-bold text-[#0A261D]">Quy trình phân tích 4 giai đoạn</h2>
+            </div>
+            <div class="flex items-center gap-2 text-xs">
+              <span id="datalensSourceDot" class="w-2 h-2 rounded-full bg-[#10B981]"></span>
+              <span class="text-[11px] font-bold text-[#0D7A5F]" id="datalensSourceLabel">raw_sales_transactions.csv (DoanhSo_BanHang_2025)</span>
+            </div>
+          </div>
+
+          <div class="grid grid-cols-2 lg:grid-cols-4 gap-2.5 md:gap-3" id="datalensStepper">
+            <!-- Step 1: Tiếp nhận & Bối cảnh -->
+            <button onclick="goToDataLensStep(0)" id="dlStepBtn-0" class="flex items-center gap-2.5 p-3 rounded-2xl step-pill-active text-left transition w-full cursor-pointer">
+              <div class="w-7 h-7 rounded-full bg-[#0A261D] text-[#D4B07B] flex items-center justify-center font-bold text-xs shrink-0 border border-[#D4B07B]/40">01</div>
+              <div class="min-w-0">
+                <div class="text-xs font-bold truncate">Tiếp nhận & Bối cảnh</div>
+                <div class="text-[10px] text-[#D8CEBE] truncate font-bold">Khảo sát Schema & Nghiệp vụ</div>
+              </div>
+            </button>
+
+            <!-- Step 2: Làm sạch & Chuẩn hóa -->
+            <button onclick="goToDataLensStep(1)" id="dlStepBtn-1" class="flex items-center gap-2.5 p-3 rounded-2xl step-pill-locked text-left transition w-full cursor-pointer">
+              <div class="w-7 h-7 rounded-full bg-[#E2D9C8] text-[#4A635A] flex items-center justify-center font-bold text-xs shrink-0">02</div>
+              <div class="min-w-0">
+                <div class="text-xs font-bold truncate">Làm sạch & Chuẩn hóa</div>
+                <div class="text-[10px] text-[#7A8F87] truncate">DQ Score & Verify Gate</div>
+              </div>
+            </button>
+
+            <!-- Step 3: Phân tích & Insights -->
+            <button onclick="goToDataLensStep(2)" id="dlStepBtn-2" class="flex items-center gap-2.5 p-3 rounded-2xl step-pill-locked text-left transition w-full cursor-pointer">
+              <div class="w-7 h-7 rounded-full bg-[#E2D9C8] text-[#4A635A] flex items-center justify-center font-bold text-xs shrink-0">03</div>
+              <div class="min-w-0">
+                <div class="text-xs font-bold truncate">Phân tích & Insights</div>
+                <div class="text-[10px] text-[#7A8F87] truncate">Hệ thống KPI & Xu hướng</div>
+              </div>
+            </button>
+
+            <!-- Step 4: Báo cáo & Phân phối -->
+            <button onclick="goToDataLensStep(3)" id="dlStepBtn-3" class="flex items-center gap-2.5 p-3 rounded-2xl step-pill-locked text-left transition w-full cursor-pointer">
+              <div class="w-7 h-7 rounded-full bg-[#E2D9C8] text-[#4A635A] flex items-center justify-center font-bold text-xs shrink-0">04</div>
+              <div class="min-w-0">
+                <div class="text-xs font-bold truncate">Báo cáo & Phân phối</div>
+                <div class="text-[10px] text-[#7A8F87] truncate">Executive Dashboard</div>
+              </div>
+            </button>
+          </div>
+        </div>
+
+        <!-- DYNAMIC WORKSPACE FOR DATALENS STEPS -->
+        <div id="datalensWorkspace">
+          <!-- Dynamically populated by app.js -->
+        </div>
+
+      </section>
+
+      <!-- ================= TAB 2: WORKFLOW B2B ================= -->
+      <section id="panel-workflow" class="space-y-6 hidden">
+        <div class="glass-card p-4 md:p-5">
+          <div class="flex items-center justify-between pb-3 mb-3 border-b border-[#ECE4D8]">
+            <div class="flex items-center gap-2">
+              <span class="w-2 h-2 rounded-full bg-[#D4B07B]"></span>
+              <h2 class="text-xs md:text-sm font-bold text-[#0A261D]">Quy trình Báo giá & Vận hành B2B Minh An</h2>
+            </div>
+            <span class="text-[11px] font-bold text-[#0D7A5F] bg-[#E8F2EE] px-2.5 py-0.5 rounded-full">
+              Khóa giá chuẩn BG-2026-11
+            </span>
+          </div>
+
+          <div class="grid grid-cols-2 lg:grid-cols-4 gap-2.5 md:gap-3" id="workflowStepper"></div>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+          <div class="lg:col-span-5 glass-card p-6 flex flex-col justify-between space-y-4">
+            <div>
+              <div class="flex items-center justify-between pb-3 mb-4 border-b border-[#ECE4D8]">
+                <h3 class="text-sm font-bold text-[#0A261D]">Thiết Lập Yêu Cầu B2B</h3>
+                <span class="text-[10px] font-bold text-[#4A635A]">4 Tình huống mẫu</span>
+              </div>
+
+              <div class="grid grid-cols-2 gap-2 mb-4">
+                <button type="button" onclick="loadSampleCase('REQ-2026-101')" class="px-2.5 py-2 text-left rounded-xl glass-pill hover:bg-white text-[11px] font-semibold text-[#0A261D] transition flex items-center justify-between cursor-pointer">
+                  <span>1. Logistics (Duyệt ngay 4%)</span>
+                  <span class="text-[#10B981] font-bold">✓</span>
+                </button>
+                <button type="button" onclick="loadSampleCase('REQ-2026-102')" class="px-2.5 py-2 text-left rounded-xl glass-pill hover:bg-white text-[11px] font-semibold text-[#0A261D] transition flex items-center justify-between cursor-pointer">
+                  <span>2. Dược phẩm (CK 8% Vượt)</span>
+                  <span class="text-[#F59E0B] font-bold">⚡</span>
+                </button>
+                <button type="button" onclick="loadSampleCase('REQ-2026-103')" class="px-2.5 py-2 text-left rounded-xl glass-pill hover:bg-white text-[11px] font-semibold text-[#0A261D] transition flex items-center justify-between cursor-pointer">
+                  <span>3. Bán lẻ (Bắt lỗi giá cũ)</span>
+                  <span class="text-[#DC2626] font-bold">⚠</span>
+                </button>
+                <button type="button" onclick="loadSampleCase('REQ-2026-104')" class="px-2.5 py-2 text-left rounded-xl glass-pill hover:bg-white text-[11px] font-semibold text-[#0A261D] transition flex items-center justify-between cursor-pointer">
+                  <span>4. Kiến trúc (Làm rõ)</span>
+                  <span class="text-[#3B82F6] font-bold">?</span>
+                </button>
+              </div>
+
+              <form id="workflowForm" onsubmit="event.preventDefault(); submitWorkflowAnalysis();" class="space-y-3">
+                <div>
+                  <label class="text-xs font-bold text-[#0A261D] mb-1 block">Khách hàng / Doanh nghiệp *</label>
+                  <input type="text" id="inpCompany" required placeholder="Công ty Cổ phần Logistics Đông Dương" class="w-full px-3.5 py-2 text-xs rounded-xl glass-input">
+                </div>
+                <div class="grid grid-cols-2 gap-3">
+                  <div>
+                    <label class="text-xs font-bold text-[#0A261D] mb-1 block">Người liên hệ *</label>
+                    <input type="text" id="inpContactName" required placeholder="Trần Đình Trọng" class="w-full px-3.5 py-2 text-xs rounded-xl glass-input">
+                  </div>
+                  <div>
+                    <label class="text-xs font-bold text-[#0A261D] mb-1 block">Email / SĐT *</label>
+                    <input type="text" id="inpContactEmail" required placeholder="trong.td@dongduonglog.vn" class="w-full px-3.5 py-2 text-xs rounded-xl glass-input">
+                  </div>
+                </div>
+                <div>
+                  <label class="text-xs font-bold text-[#0A261D] mb-1 block">Nội dung nhu cầu thiết bị *</label>
+                  <textarea id="inpRawContent" rows="3" required placeholder="Cần báo giá 02 Server Dell PowerEdge R760 và 01 Firewall FortiGate 100F. Chiết khấu 4%." class="w-full px-3.5 py-2 text-xs rounded-xl glass-input"></textarea>
+                </div>
+                <button type="submit" id="btnSubmitWorkflow" class="w-full py-2.5 rounded-xl bg-[#0A261D] hover:bg-[#133A2D] text-white font-bold text-xs shadow-md transition flex items-center justify-center gap-2 cursor-pointer">
+                  <span>🚀 AI Thẩm Định Báo Giá</span>
+                </button>
+              </form>
+            </div>
+          </div>
+
+          <div class="lg:col-span-7 glass-card p-6 flex flex-col justify-between" id="rightAnalysisPane">
+            <div id="rightPaneContent" class="space-y-4"></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ================= TAB 3: TRACKER ================= -->
+      <section id="panel-tracker" class="space-y-6 hidden">
+        <div class="glass-card p-6">
+          <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between pb-4 mb-4 border-b border-[#ECE4D8] gap-3">
+            <div>
+              <h2 class="text-base font-bold text-[#0A261D]">Theo dõi Hồ sơ</h2>
+              <p class="text-xs text-[#4A635A]">Quản lý toàn bộ tiến trình cơ hội từ tiếp nhận đến chốt hợp đồng</p>
+            </div>
+            <input type="text" id="trackerSearchInput" oninput="filterTrackerTable()" placeholder="Tìm theo mã OPP, công ty, NVKD..." class="px-3 py-1.5 text-xs rounded-xl glass-input w-64">
+          </div>
+          <div class="overflow-x-auto">
+            <table class="w-full text-left text-xs">
+              <thead>
+                <tr class="border-b border-[#ECE4D8] text-[11px] font-bold text-[#4A635A] uppercase bg-[#F5EFE6]/60">
+                  <th class="p-3">Mã OPP</th>
+                  <th class="p-3">Khách hàng</th>
+                  <th class="p-3">NVKD Phụ trách</th>
+                  <th class="p-3">Tổng giá trị</th>
+                  <th class="p-3">Chiết khấu</th>
+                  <th class="p-3">Trạng thái</th>
+                  <th class="p-3 text-right">Thao tác</th>
+                </tr>
+              </thead>
+              <tbody id="trackerTableBody"></tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- ================= TAB 4: APPROVALS ================= -->
+      <section id="panel-approvals" class="space-y-6 hidden">
+        <div class="glass-card p-6">
+          <div class="flex items-center justify-between pb-4 mb-4 border-b border-[#ECE4D8]">
+            <div>
+              <h2 class="text-base font-bold text-[#0A261D]">Trưởng Phòng Kinh Doanh Phê Duyệt Vượt Quyền</h2>
+              <p class="text-xs text-[#4A635A]">Xét duyệt các hồ sơ chiết khấu > 5% (tối đa 15%) hoặc đơn hàng > 1 tỷ VND</p>
+            </div>
+          </div>
+          <div id="approvalsListContainer" class="space-y-4"></div>
+        </div>
+      </section>
+
+      <!-- ================= TAB 5: MASTERDATA ================= -->
+      <section id="panel-masterdata" class="space-y-6 hidden">
+        <div class="glass-card p-6">
+          <div class="flex items-center justify-between pb-4 mb-4 border-b border-[#ECE4D8]">
+            <div>
+              <h2 class="text-base font-bold text-[#0A261D]">Bảng Giá Chuẩn & Tồn Kho Thực Tế (BG-2026-11)</h2>
+              <p class="text-xs text-[#4A635A]">Hệ thống khóa giá niêm yết & kiểm tra tồn kho tức thì trước khi báo giá</p>
+            </div>
+          </div>
+          <div class="overflow-x-auto">
+            <table class="w-full text-left text-xs">
+              <thead>
+                <tr class="border-b border-[#ECE4D8] text-[11px] font-bold text-[#4A635A] uppercase bg-[#F5EFE6]/60">
+                  <th class="p-3">SKU</th>
+                  <th class="p-3">Tên thiết bị / Dịch vụ</th>
+                  <th class="p-3">Danh mục</th>
+                  <th class="p-3">Tồn kho</th>
+                  <th class="p-3">Giá niêm yết (VND)</th>
+                  <th class="p-3">Giá vốn COGS</th>
+                  <th class="p-3">Thời gian SLA</th>
+                </tr>
+              </thead>
+              <tbody id="masterdataTableBody"></tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+    </main>
+
+    <!-- ================= FOOTER ================= -->
+    <footer class="py-4 border-t border-[#ECE4D8] flex flex-col sm:flex-row items-center justify-between text-xs text-[#4A635A] gap-2 mt-auto">
+      <div class="flex items-center gap-2">
+        <span class="w-2 h-2 rounded-full bg-[#10B981]"></span>
+        <span class="text-[#0A261D] font-semibold">DataLens Studio & Minh An B2B Sales · Đồng bộ quy trình 4 giai đoạn chuẩn</span>
+      </div>
+      <div class="flex items-center gap-3 font-mono text-[11px]">
+        <span class="text-[#4A635A]">Localhost 8080 Active</span>
+      </div>
+    </footer>
+
+  </div>
+
+  <!-- ================= DISCOVERY MODAL (TRAO ĐỔI VỚI AI) ================= -->
+  <dialog id="discoveryDialog" class="bg-transparent backdrop:bg-black/40 backdrop:backdrop-blur-sm p-0 m-auto rounded-3xl max-w-xl w-full border-0 shadow-2xl">
+    <div class="glass-card p-6 shadow-2xl flex flex-col space-y-4 bg-white border border-[#ECE4D8]">
+      <div class="flex items-center justify-between border-b border-[#ECE4D8] pb-3">
+        <div class="flex items-center gap-2.5">
+          <div class="w-8 h-8 rounded-xl bg-[#0A261D] text-[#D4B07B] flex items-center justify-center font-bold text-xs">AI</div>
+          <div>
+            <h3 class="text-sm font-bold text-[#0A261D]">Trao Đổi Yêu Cầu Phân Tích Với AI</h3>
+            <p class="text-[11px] text-[#4A635A]">AI làm rõ bối cảnh và định hướng phân tích</p>
+          </div>
+        </div>
+        <button onclick="document.getElementById('discoveryDialog').close()" class="text-[#4A635A] hover:text-[#0A261D] p-1 rounded-lg hover:bg-[#F5EFE6]">
+          ✕
+        </button>
+      </div>
+
+      <div id="discoveryContent" class="space-y-3 text-xs text-[#2C423B]"></div>
+
+      <div class="pt-2 flex justify-end">
+        <button onclick="document.getElementById('discoveryDialog').close()" class="px-4 py-2 rounded-xl bg-[#0A261D] text-white font-bold text-xs">
+          Đã hiểu & Tiếp tục
+        </button>
+      </div>
+    </div>
+  </dialog>
+
+  <!-- ================= AI ASSISTANT DIALOG ================= -->
+  <dialog id="ai-chat-dialog" class="bg-transparent backdrop:bg-black/40 backdrop:backdrop-blur-sm p-0 m-auto rounded-3xl max-w-xl w-full border-0 shadow-2xl">
+    <div class="glass-card p-6 shadow-2xl flex flex-col space-y-3.5 bg-white border border-[#ECE4D8]">
+      <div class="flex items-center justify-between border-b border-[#ECE4D8] pb-3">
+        <div class="flex items-center gap-2.5">
+          <div class="w-8 h-8 rounded-xl bg-[#0A261D] flex items-center justify-center font-bold text-[#D4B07B] text-xs shadow-sm border border-[#D4B07B]/40">AI</div>
+          <div>
+            <h3 class="text-sm font-bold text-[#0A261D]">Trợ Lý AI DataLens & Minh An</h3>
+            <p class="text-[11px] text-[#4A635A]">Hỏi đáp dữ liệu, quy trình làm sạch & phân tích</p>
+          </div>
+        </div>
+        <button onclick="closeChatDrawer()" class="text-[#4A635A] hover:text-[#0A261D] p-1 rounded-lg hover:bg-[#F5EFE6] transition cursor-pointer">✕</button>
+      </div>
+      <div id="modal-chat-log" class="h-64 overflow-y-auto space-y-2 p-1 font-sans text-xs">
+        <div class="p-3.5 rounded-2xl glass-input text-[#0A261D] mr-8">
+          Xin chào! Tôi có thể hỗ trợ bạn kết nối Google Sheets, kiểm tra quy tắc làm sạch dữ liệu hoặc giải đáp các chỉ số kinh doanh.
+        </div>
+      </div>
+      <div class="flex items-center gap-2 pt-2 border-t border-[#ECE4D8]">
+        <input type="text" id="modal-chat-input" placeholder="Hỏi về dữ liệu hoặc bảng giá..." class="flex-1 px-4 py-2.5 text-xs rounded-xl glass-input text-[#0A261D]" onkeydown="if(event.key==='Enter') sendModalChatMessage()">
+        <button onclick="sendModalChatMessage()" class="px-4 py-2.5 bg-[#0A261D] text-white rounded-xl text-xs font-bold">Gửi</button>
+      </div>
+    </div>
+  </dialog>
+
+  <!-- TOAST -->
+  <div id="toastBox" class="toast-box hidden bg-[#0A261D] text-white border border-[#D4B07B]/40 shadow-xl px-4 py-2.5 rounded-2xl text-xs font-bold flex items-center gap-2"></div>
+
+  <script src="app.js?v=60"></script>
+</body>
+</html>

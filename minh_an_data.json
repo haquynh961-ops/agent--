@@ -1,0 +1,231 @@
+{
+  "company": {
+    "name": "Công ty Công nghệ Minh An",
+    "weekly_request_volume": 0,
+    "active_price_list_version": "BG-2026-11",
+    "previous_price_list_version": "BG-2026-08",
+    "currency": "VND"
+  },
+  "authority_policy": {
+    "sales_rep_max_discount_pct": 5,
+    "sales_manager_max_discount_pct": 15,
+    "auto_escalate_if_total_over_vnd": 1000000000,
+    "auto_escalate_if_deadline_at_risk": true,
+    "sla_clarification_followup_hours": 24,
+    "sla_ops_verification_hours": 4
+  },
+  "sales_team": [
+    {
+      "id": "NVKD-01",
+      "name": "Nguyễn Minh Quân",
+      "specialty": "Hạ tầng Server & Lưu trữ",
+      "active_deals": 12,
+      "email": "quan.nm@minhan.vn"
+    },
+    {
+      "id": "NVKD-02",
+      "name": "Trần Thu Hà",
+      "specialty": "Mạng & Bảo mật (Network/Security)",
+      "active_deals": 9,
+      "email": "ha.tt@minhan.vn"
+    },
+    {
+      "id": "NVKD-03",
+      "name": "Lê Hoàng Nam",
+      "specialty": "Thiết bị đầu cuối (Laptop/Workstation)",
+      "active_deals": 14,
+      "email": "nam.lh@minhan.vn"
+    },
+    {
+      "id": "NVKD-04",
+      "name": "Phạm Thảo Vy",
+      "specialty": "Dịch vụ Cloud & Triển khai trọn gói",
+      "active_deals": 10,
+      "email": "vy.pt@minhan.vn"
+    },
+    {
+      "id": "NVKD-05",
+      "name": "Đỗ Quang Huy",
+      "specialty": "Hạ tầng Server & Bảo mật",
+      "active_deals": 11,
+      "email": "huy.dq@minhan.vn"
+    },
+    {
+      "id": "NVKD-06",
+      "name": "Vũ Ngọc Linh",
+      "specialty": "Khách hàng Doanh nghiệp SME & Thiết bị văn phòng",
+      "active_deals": 8,
+      "email": "linh.vn@minhan.vn"
+    }
+  ],
+  "catalog": [
+    {
+      "sku": "SRV-DL-R750",
+      "name": "Máy chủ Dell PowerEdge R750xs",
+      "aliases": [
+        "Dell R750",
+        "R750xs",
+        "máy chủ Dell",
+        "server Dell"
+      ],
+      "category": "Server",
+      "unit": "Bộ",
+      "current_price_vnd": 148000000,
+      "old_price_vnd": 139000000,
+      "stock_available": 4,
+      "inbound_qty": 6,
+      "inbound_eta_days": 10,
+      "deploy_lead_time_days": 3
+    },
+    {
+      "sku": "FW-FG-100F",
+      "name": "Tường lửa FortiGate 100F (kèm License 1 năm)",
+      "aliases": [
+        "FortiGate 100F",
+        "FG-100F",
+        "firewall Fortinet",
+        "tường lửa"
+      ],
+      "category": "Security",
+      "unit": "Thiết bị",
+      "current_price_vnd": 72000000,
+      "old_price_vnd": 68500000,
+      "stock_available": 7,
+      "inbound_qty": 5,
+      "inbound_eta_days": 7,
+      "deploy_lead_time_days": 2
+    },
+    {
+      "sku": "SW-CS-9200L",
+      "name": "Switch Cisco Catalyst 9200L-24P-4G",
+      "aliases": [
+        "Cisco 9200L",
+        "Switch Cisco 24 port",
+        "9200L"
+      ],
+      "category": "Network",
+      "unit": "Chiếc",
+      "current_price_vnd": 54000000,
+      "old_price_vnd": 51000000,
+      "stock_available": 2,
+      "inbound_qty": 10,
+      "inbound_eta_days": 14,
+      "deploy_lead_time_days": 2
+    },
+    {
+      "sku": "LT-TP-T14G5",
+      "name": "Laptop Lenovo ThinkPad T14 Gen 5 (i7/16GB/512GB)",
+      "aliases": [
+        "ThinkPad T14",
+        "Lenovo T14",
+        "laptop doanh nghiệp",
+        "T14 Gen 5"
+      ],
+      "category": "Endpoint",
+      "unit": "Chiếc",
+      "current_price_vnd": 29500000,
+      "old_price_vnd": 28000000,
+      "stock_available": 35,
+      "inbound_qty": 50,
+      "inbound_eta_days": 5,
+      "deploy_lead_time_days": 2
+    },
+    {
+      "sku": "AP-UB-U6PRO",
+      "name": "Access Point Ubiquiti UniFi U6 Pro",
+      "aliases": [
+        "UniFi U6 Pro",
+        "U6 Pro",
+        "WiFi UniFi",
+        "bộ phát WiFi"
+      ],
+      "category": "Network",
+      "unit": "Chiếc",
+      "current_price_vnd": 4800000,
+      "old_price_vnd": 4500000,
+      "stock_available": 40,
+      "inbound_qty": 30,
+      "inbound_eta_days": 4,
+      "deploy_lead_time_days": 1
+    },
+    {
+      "sku": "SVC-DEPLOY-HA",
+      "name": "Dịch vụ khảo sát, lắp đặt & cấu hình hạ tầng mạng/server",
+      "aliases": [
+        "dịch vụ triển khai",
+        "dịch vụ lắp đặt",
+        "lắp đặt cấu hình",
+        "cấu hình hệ thống",
+        "lắp đặt tận nơi",
+        "triển khai lắp đặt"
+      ],
+      "category": "Service",
+      "unit": "Gói",
+      "current_price_vnd": 25000000,
+      "old_price_vnd": 22000000,
+      "stock_available": 999,
+      "inbound_qty": 0,
+      "inbound_eta_days": 0,
+      "deploy_lead_time_days": 4
+    },
+    {
+      "sku": "SVC-SOC-1Y",
+      "name": "Dịch vụ giám sát an toàn thông tin & bảo trì 24/7 (12 tháng)",
+      "aliases": [
+        "bảo trì 24/7",
+        "giám sát SOC",
+        "gói bảo trì 1 năm"
+      ],
+      "category": "Service",
+      "unit": "Gói",
+      "current_price_vnd": 45000000,
+      "old_price_vnd": 42000000,
+      "stock_available": 999,
+      "inbound_qty": 0,
+      "inbound_eta_days": 0,
+      "deploy_lead_time_days": 1
+    }
+  ],
+  "sample_requests": [
+    {
+      "id": "REQ-2026-101",
+      "channel": "Email",
+      "received_at": "2026-11-11T08:15:00+07:00",
+      "customer_company": "Công ty Cổ phần Logistics Đông Dương",
+      "contact_name": "Anh Hoàng - Trưởng phòng CNTT",
+      "contact_email": "hoang.it@dongduonglog.vn",
+      "subject": "Yêu cầu báo giá nâng cấp thiết bị văn phòng mới & chiết khấu",
+      "raw_content": "Chào Minh An, bên mình mở thêm chi nhánh ở Bình Dương, cần báo giá: 15 chiếc Laptop Lenovo ThinkPad T14 Gen 5, 8 chiếc Access Point UniFi U6 Pro, 1 bộ Firewall FortiGate 100F và 1 gói dịch vụ lắp đặt cấu hình tận nơi. Tổng ngân sách dự kiến khoảng 600 triệu VND. Thời hạn cần bàn giao xong trước 25/11/2026 (trong vòng 14 ngày). Do lấy nhiều hạng mục, bên mình đề nghị chiết khấu 8%. Anh Hoàng (Trưởng phòng IT) và Chị Mai (Giám đốc Tài chính - mai.cfo@dongduonglog.vn) sẽ duyệt ngân sách. Mong phản hồi sớm!"
+    },
+    {
+      "id": "REQ-2026-102",
+      "channel": "Web Form",
+      "received_at": "2026-11-11T08:42:00+07:00",
+      "customer_company": "Công ty TNHH Dược phẩm An Khang",
+      "contact_name": "Chị Lan - Hành chính",
+      "contact_email": "lan.hc@ankhangpharma.vn",
+      "subject": "Cần tư vấn mua Server và Switch cho nhà máy",
+      "raw_content": "Gửi Minh An, phòng IT bên chị nhờ hỏi giá 2 bộ Máy chủ Dell PowerEdge R750xs và 4 chiếc Switch Cisco 9200L. Bên chị cần triển khai trong tháng này. Cho xin báo giá sơ bộ nhé, còn ngân sách cụ thể và ai ký duyệt thì sếp đi công tác chưa chốt."
+    },
+    {
+      "id": "REQ-2026-103",
+      "channel": "Email",
+      "received_at": "2026-11-11T09:05:00+07:00",
+      "customer_company": "Tập đoàn Bán lẻ Sao Mai",
+      "contact_name": "Anh Tuấn - Phó Giám đốc Hạ tầng",
+      "contact_email": "tuan.infra@saomairetail.vn",
+      "subject": "Đơn hàng gấp Switch Cisco & Server theo bảng giá cũ tháng 8",
+      "raw_content": "Chào team Minh An, bên Sao Mai cần gấp 6 chiếc Switch Cisco Catalyst 9200L-24P-4G, 2 bộ Máy chủ Dell PowerEdge R750xs và 1 gói dịch vụ bảo trì 24/7 1 năm. Thời hạn triển khai bắt buộc hoàn thành trong 5 ngày tới (trước 16/11/2026) để kịp khai trương kho. Ngân sách tối đa 700 triệu VND. Áp giúp anh đơn giá theo báo giá cũ hồi tháng 8 nhé, chiết khấu 4%. Người phê duyệt là anh Tuấn (tuan.infra@saomairetail.vn)."
+    },
+    {
+      "id": "REQ-2026-104",
+      "channel": "Web Form",
+      "received_at": "2026-11-11T09:20:00+07:00",
+      "customer_company": "Công ty Kiến trúc Xanh Việt",
+      "contact_name": "Anh Minh - Giám đốc Điều hành",
+      "contact_email": "minh.ceo@xanhvietarch.vn",
+      "subject": "Mua bổ sung Laptop và WiFi cho đội thiết kế",
+      "raw_content": "Xin chào Minh An, bên mình cần mua 10 Laptop Lenovo ThinkPad T14 Gen 5 và 5 bộ phát WiFi UniFi U6 Pro. Ngân sách dự kiến 350 triệu VND. Cần giao hàng và bàn giao trong vòng 10 ngày (trước 21/11/2026). Đề nghị chiết khấu 3%. Tôi là Minh (CEO) trực tiếp phê duyệt hợp đồng."
+    }
+  ]
+}
